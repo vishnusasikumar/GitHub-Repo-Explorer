@@ -13,36 +13,19 @@ struct Constants {
     // MARK: - Design System
     struct Design {
         // Padding and Spacing
-        static let sectionSpacing: CGFloat = 16
         static let cardSpacing: CGFloat = 16
-        static let textSpacing: CGFloat = 4
-        static let cardPadding: CGFloat = 20
-        static let iconSpacing: CGFloat = 16
-        static let datePickerPadding: CGFloat = 16
-        static let verticalSpacing: CGFloat = 20
+        static let iconPadding: CGFloat = 8
+        static let searchFieldPadding: CGFloat = 8
+        static let searchFieldHorizontalPadding: CGFloat = 24
 
         // Corner Radius
-        static let cardCornerRadius: CGFloat = 16
-        static let datePickerCornerRadius: CGFloat = 12
-        static let buttonCornerRadius: CGFloat = 8
-
-        // Shadows
-        static let shadowRadius: CGFloat = 12
-        static let shadowOpacity: Double = 0.08
-        static let shadowOffset = CGSize(width: 0, height: 4)
-
-        // Opacity
-        static let backgroundOpacity: Double = 0.1
-        static let borderOpacity: Double = 0.2
-        static let strokeOpacity: Double = 0.3
-        static let lightShadowRadius: CGFloat = 4
-        static let lightShadowOpacity: Double = 0.05
-        static let lightShadowOffset = CGSize(width: 0, height: 2)
+        static let searchCornerRadius: CGFloat = 8
 
         // Sizes
-        static let progressScale: CGFloat = 1.2
-        static let iconSize: CGFloat = 50
-        static let minContentHeight: CGFloat = 200
+        static let trimMinScale: CGFloat = 0.75
+        static let trimMaxScale: CGFloat = 1.0
+        static let lineWidth: CGFloat = 16
+        static let loadingViewSize: CGFloat = 100
 
         // Line Width
         static let borderLineWidth: CGFloat = 1
@@ -51,31 +34,44 @@ struct Constants {
     // MARK: - Strings
     struct Strings {
         // Navigation
-        static let navigationTitle = String(localized: "Transactions")
+        static let repositoriesTabTitle = String(localized: "Repositories")
+        static let favoritesTabTitle = String(localized: "Favorites")
+        static let repositoriesTitle = String(localized: "GitHub Search")
         static let favouritesTitle = String(localized: "Favorites")
 
-        // Loading State
-        static let loadingMessage = String(localized: "Loading Transactions")
+        // Search
+        static let placeHolderSearch = String(localized: "Search repositories...")
+        static let cancelSearch = String(localized: "Cancel")
 
         // Error State
-        static let errorMessage = String(localized: "Failed to load Transactions")
+        static let errorMessage = String(localized: "Failed to load Repositories")
         static let tryAgainButton = String(localized: "Try Again")
         static let unknown = String(localized: "Unknown")
 
         // Empty State
-        static let noTransactionsTitle = String(localized: "No Transactions Found")
-        static let noTransactionsMessage = String(localized: "Try adjusting your date filter to see more results")
+        static let noRepositoriesTitle = String(localized: "No Repositories Found")
+        static let noRepositoriesMessage = String(localized: "Try adjusting your date filter to see more results")
         static let noNameString = String(localized: "Unknown Name")
         static let noFavouritesTitle = String(localized: "No favorites yet!")
+
+        static let groupByPickerTitle = String(localized: "Group By")
+        static let language = String(localized: "Language")
+        static let ownerType = String(localized: "Owner Type")
+        static let stargazerBand = String(localized: "Stargazer Band")
+        static let updatedMonth = String(localized: "Updated Month")
+        static let forkStatus = String(localized: "Fork Status")
 
         // Accessibility
         static let repositoryNameLabel = "RepositoryNameLabel"
         static let repositoryOwnerLoginLabel = "RepositoryOwnerLoginLabel"
         static let favouriteToggle = "FavouriteToggle"
-        static let startDatePicker = "StartDatePicker"
-        static let endDatePicker = "EndDatePicker"
-        static let transactionsList = "TransactionsList"
+        static let repositoriesList = "RepositoriesList"
         static let favouritesList = "FavouritesList"
+        static let idleView = "IdleView"
+        static let loadingView = "LoadingIndicator"
+        static let paginationControls = "PaginationControls"
+        static let groupByPicker = "GroupByPicker"
+        static let errorView = "ErrorView"
     }
 
     // MARK: - Ints
@@ -106,28 +102,36 @@ struct Constants {
 
     // MARK: - Icons
     struct Icons {
+        static let repositoriesTab = "list.bullet"
+        static let favoritesTab = "star.fill"
         static let isFavourite = "star.fill"
         static let favourite = "star"
-        static let expenseArrow = "arrow.down.circle.fill"
-        static let positiveBalance = "plus.circle.fill"
-        static let negativeBalance = "minus.circle.fill"
 
-        static let filter = "line.3.horizontal.decrease.circle.fill"
-        static let calendar = "calendar"
-        static let transactionList = "list.bullet.rectangle"
+        static let first = "arrow.backward.to.line"
+        static let prev = "arrow.backward"
+        static let next = "arrow.forward"
+        static let last = "arrow.forward.to.line"
+        static let unknown = "questionmark"
 
-        static let errorWarning = "exclamationmark.triangle.fill"
-        static let emptyTray = "tray"
-        static let refresh = "arrow.clockwise"
+        static let language = "textformat"
+        static let ownerType = "person.2.fill"
+        static let stargazerBand = "star.lefthalf.fill"
+        static let updatedMonth = "calendar"
+        static let forkStatus = "tuningfork"
+
+        static let searchIcon = "magnifyingglass"
+        static let clearSearchIcon = "xmark.circle.fill"
     }
 
-    // MARK: - Currency
-    struct Currency {
-        static let defaultCode = "NZD"
-    }
-
+    // MARK: - Colors
     struct Colors {
         static let negativeFavouriteColor = Color.gray
         static let positiveFavouriteColor = Color.yellow
+
+        static let searchTextColor = Color(.systemGray6)
     }
+}
+
+extension String {
+    static var empty: String = ""
 }

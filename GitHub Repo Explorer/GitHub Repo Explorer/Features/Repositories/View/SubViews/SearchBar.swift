@@ -13,25 +13,25 @@ struct SearchBar: View {
 
     var body: some View {
         HStack {
-            TextField("Search repositories...", text: $text)
-                .padding(8)
-                .padding(.horizontal, 24)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
+            TextField(Constants.Strings.placeHolderSearch, text: $text)
+                .padding(Constants.Design.searchFieldPadding)
+                .padding(.horizontal, Constants.Design.searchFieldHorizontalPadding)
+                .background(Constants.Colors.searchTextColor)
+                .cornerRadius(Constants.Design.searchCornerRadius)
                 .overlay(
                     HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
+                        Image(systemName: Constants.Icons.searchIcon)
+                            .foregroundColor(Constants.Colors.negativeFavouriteColor)
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 8)
+                            .padding(.leading, Constants.Design.iconPadding)
 
                         if isEditing && !text.isEmpty {
                             Button(action: {
-                                text = ""
+                                text = .empty
                             }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.gray)
-                                    .padding(.trailing, 8)
+                                Image(systemName: Constants.Icons.clearSearchIcon)
+                                    .foregroundColor(Constants.Colors.negativeFavouriteColor)
+                                    .padding(.trailing, Constants.Design.iconPadding)
                             }
                         }
                     }
@@ -41,9 +41,9 @@ struct SearchBar: View {
                 }
 
             if isEditing {
-                Button("Cancel") {
+                Button(Constants.Strings.cancelSearch) {
                     self.isEditing = false
-                    self.text = ""
+                    self.text = .empty
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
                 .transition(.move(edge: .trailing))

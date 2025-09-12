@@ -15,18 +15,14 @@ struct ContentView: View {
         TabView {
             // All repositories tab
             RepositoryListView(viewModel: viewModel, favoritesManager: favoritesManager)
-                .environmentObject(viewModel)
-                .environmentObject(favoritesManager)
                 .tabItem {
-                    Label("Repositories", systemImage: "list.bullet")
+                    Label(Constants.Strings.repositoriesTabTitle, systemImage: Constants.Icons.repositoriesTab)
                 }
 
             // Favorites tab
             FavoriteRepositoriesView(viewModel: viewModel, favoritesManager: favoritesManager)
-                .environmentObject(viewModel)
-                .environmentObject(favoritesManager)
                 .tabItem {
-                    Label("Favorites", systemImage: "star.fill")
+                    Label(Constants.Strings.favoritesTabTitle, systemImage: Constants.Icons.favoritesTab)
                 }
         }
         .task {

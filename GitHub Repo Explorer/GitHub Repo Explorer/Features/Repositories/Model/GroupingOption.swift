@@ -18,21 +18,31 @@ enum GroupingOption: String, CaseIterable, Identifiable {
 
     var label: String {
         switch self {
-            case .language: return "Language"
-            case .ownerType: return "Owner Type"
-            case .stargazerBand: return "Stargazer Band"
-            case .updatedMonth: return "Updated Month"
-            case .forkStatus: return "Fork Status"
+            case .language:
+                return Constants.Strings.language
+            case .ownerType:
+                return Constants.Strings.ownerType
+            case .stargazerBand:
+                return Constants.Strings.stargazerBand
+            case .updatedMonth:
+                return Constants.Strings.updatedMonth
+            case .forkStatus:
+                return Constants.Strings.forkStatus
         }
     }
 
     var icon: String {
         switch self {
-            case .language: return "textformat"
-            case .ownerType: return "person.2.fill"
-            case .stargazerBand: return "star.lefthalf.fill"
-            case .updatedMonth: return "calendar"
-            case .forkStatus: return "tuningfork"
+            case .language:
+                return Constants.Icons.language
+            case .ownerType:
+                return Constants.Icons.ownerType
+            case .stargazerBand:
+                return Constants.Icons.stargazerBand
+            case .updatedMonth:
+                return Constants.Icons.updatedMonth
+            case .forkStatus:
+                return Constants.Icons.forkStatus
         }
     }
 }

@@ -19,13 +19,17 @@ struct RepositoryListView: View {
                 Group {
                     switch viewModel.loadingState {
                         case .idle:
-                            Text("Idle")
+                            Text(Constants.Strings.noRepositoriesTitle)
                                 .font(.footnote)
                                 .foregroundColor(.secondary)
                                 .frame(maxWidth: .infinity)
+                                .accessibilityIdentifier(Constants.Strings.idleView)
 
                         case .loading:
-                            ProgressView("Loading repositories...")
+                            ActivityIndicator()
+                                .frame(width: Constants.Design.loadingViewSize, height: Constants.Design.loadingViewSize)
+                                .foregroundColor(.accentColor)
+                                .accessibilityIdentifier(Constants.Strings.loadingView)
 
                         case .success:
                             VStack {
@@ -34,29 +38,27 @@ struct RepositoryListView: View {
                             }
 
                         case .failure(let error):
-                            VStack(spacing: 12) {
-                                Text("Error")
-                                    .font(.title)
-                                Text(error.errorDescription ?? "Unknown error")
-                                    .multilineTextAlignment(.center)
-                                Button("Retry") {
+                            ErrorView(
+                                errorMessage: Constants.Strings.errorMessage,
+                                errorDescription: error.errorDescription ?? Constants.Strings.unknown,
+                                retryAction: {
                                     viewModel.searchQuery = viewModel.searchQuery
                                 }
-                            }
-                            .padding()
+                            )
                     }
                     Spacer()
                 }
             }
-            .navigationTitle("GitHub Search")
+            .navigationTitle(Constants.Strings.repositoriesTitle)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Picker("Group By", selection: $viewModel.groupingOption) {
+                    Picker(Constants.Strings.groupByPickerTitle, selection: $viewModel.groupingOption) {
                         ForEach(GroupingOption.allCases) { option in
                             Label(option.label, systemImage: option.icon)
                                 .tag(option)
                         }
                     }
+                    .accessibilityIdentifier(Constants.Strings.groupByPicker)
                     .pickerStyle(.menu)
                 }
             }
@@ -69,85 +71,24 @@ struct RepositoryListView: View {
                 if let repos = viewModel.groupedRepositories[key] {
                     Section(header: Text(key)) {
                         ForEach(repos) { repo in
-                            repoRow(repo)
+                            RepositoryRowView(repo: repo)
                         }
                     }
                 }
             }
         }
+        .accessibilityIdentifier(Constants.Strings.repositoriesList)
         .listStyle(InsetGroupedListStyle())
     }
 
-    private func repoRow(_ repo: Repository) -> some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(repo.fullName ?? "Unknown Name")
-                    .font(.headline)
-                if let language = repo.language {
-                    Text(language)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                if let stargazersCount = repo.stargazersCount {
-                    Text(StargazerBand.from(count: stargazersCount).rawValue)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-            }
-            Spacer()
-            Button(action: {
-                favoritesManager.toggleFavorite(repo)
-            }) {
-                Image(systemName: favoritesManager.isFavorited(repo) ? "star.fill" : "star")
-                    .foregroundColor(favoritesManager.isFavorited(repo) ? .yellow : .gray)
-            }
-            .buttonStyle(BorderlessButtonStyle()) // prevents row selection when tapping star
-        }
-    }
-
+    @ViewBuilder
     private var paginationControls: some View {
         HStack {
-            paginationButton(rel: "first")
-            paginationButton(rel: "prev")
-            paginationButton(rel: "next")
-            paginationButton(rel: "last")
-        }
-    }
-
-    @ViewBuilder
-    private func paginationButton(rel: String) -> some View {
-        let isEnabled = viewModel.paginationLinks[rel] != nil
-
-        // Map rel to SF Symbol name
-        let systemImageName: String = {
-            switch rel {
-                case "first":
-                    return "arrow.backward.to.line"
-                case "prev":
-                    return "arrow.backward"
-                case "next":
-                    return "arrow.forward"
-                case "last":
-                    return "arrow.forward.to.line"
-                default:
-                    return "questionmark"
+            ForEach(Rel.allCases) { option in
+                PaginationButton(rel: option)
             }
-        }()
-
-        Button(action: {
-            Task {
-                await viewModel.loadPage(for: rel)
-            }
-        }) {
-            Image(systemName: systemImageName)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(isEnabled ? .white : .gray)
-                .frame(width: 36, height: 36)
-                .background(isEnabled ? Color.accentColor : Color.gray.opacity(0.3))
-                .clipShape(Circle())
         }
-        .padding(.horizontal, 10)
-        .disabled(!isEnabled)
+        .accessibilityIdentifier(Constants.Strings.paginationControls)
     }
 }
 

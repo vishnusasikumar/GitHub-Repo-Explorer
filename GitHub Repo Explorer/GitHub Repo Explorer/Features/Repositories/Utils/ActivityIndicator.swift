@@ -16,8 +16,8 @@ struct ActivityIndicator: View {
         GeometryReader { geometry in
             ForEach(0..<5) { _ in
                 Circle()
-                    .trim(from: 0.75, to: 1.0)
-                    .stroke(lineWidth: 16)
+                    .trim(from: Constants.Design.trimMinScale, to: Constants.Design.trimMaxScale)
+                    .stroke(lineWidth: Constants.Design.lineWidth)
                     .frame(width: geometry.size.width, height: geometry.size.height)
                     .rotationEffect(!self.isAnimating ? .degrees(0) : .degrees(360))
                     .animation(Animation

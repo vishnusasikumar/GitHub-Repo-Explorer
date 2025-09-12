@@ -23,11 +23,11 @@ struct FavoriteRepositoriesView: View {
                         .foregroundColor(.secondary)
                 } else {
                     ForEach(favoriteRepos) { repo in
-                        RepositoryRowView(repo: repo, favoritesManager: favoritesManager)
+                        RepositoryRowView(repo: repo)
                     }
                 }
             }
-            .accessibilityIdentifier(Constants.Strings.transactionsList)
+            .accessibilityIdentifier(Constants.Strings.favouritesList)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle(Constants.Strings.favouritesTitle)
         }

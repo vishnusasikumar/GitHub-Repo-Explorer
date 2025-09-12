@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RepositoryRowView: View {
     let repo: Repository
-    @ObservedObject var favoritesManager: FavoritesManager
+    @ObservedObject var favoritesManager: FavoritesManager = DI.shared.resolve()
 
     var body: some View {
         HStack {
@@ -36,5 +36,5 @@ struct RepositoryRowView: View {
 }
 
 #Preview {
-    RepositoryRowView(repo: RepositoryMock.sample1, favoritesManager: DI.shared.resolve())
+    RepositoryRowView(repo: RepositoryMock.sample1)
 }
