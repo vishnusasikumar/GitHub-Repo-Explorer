@@ -9,6 +9,12 @@ import SwiftUI
 
 @main
 struct GitHub_Repo_ExplorerApp: App {
+
+    init() {
+        // Register dependencies once at app startup
+        RegisterDI.register()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
