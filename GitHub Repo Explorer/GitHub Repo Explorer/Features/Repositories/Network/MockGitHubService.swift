@@ -64,6 +64,7 @@ struct RepositoryMock {
         htmlUrl: "https://github.com/kriskowal/q",
         stargazersCount: 15081,
         updatedAt: "2025-09-11T18:39:54Z",
+        createdAt: "2019-06-12T08:26:27Z",
         allowForking: true
     )
 
@@ -80,6 +81,7 @@ struct RepositoryMock {
         htmlUrl: "https://github.com/harelba/q",
         stargazersCount: 10319,
         updatedAt: "2025-09-10T05:33:42Z",
+        createdAt: "2015-11-28T09:48:17Z",
         allowForking: true
     )
 

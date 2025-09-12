@@ -19,5 +19,6 @@ struct GitHub_Repo_ExplorerApp: App {
         WindowGroup {
             ContentView()
         }
+        .handlesExternalEvents(matching: ["ghre", "https"]) 
     }
 }

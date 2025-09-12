@@ -8,25 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var coordinator = AppCoordinator()
     @StateObject var viewModel: RepositoryViewModel = DI.shared.resolve()
     @StateObject var favoritesManager: FavoritesManager = DI.shared.resolve()
 
     var body: some View {
-        TabView {
-            // All repositories tab
-            RepositoryListView(viewModel: viewModel, favoritesManager: favoritesManager)
-                .tabItem {
-                    Label(Constants.Strings.repositoriesTabTitle, systemImage: Constants.Icons.repositoriesTab)
-                }
+        NavigationStack {
+            TabView(selection: $coordinator.selectedTab) {
+                RepositoryListView(viewModel: viewModel, favoritesManager: favoritesManager)
+                    .tabItem {
+                        Label(Constants.Strings.repositoriesTabTitle, systemImage: Constants.Icons.repositoriesTab)
+                    }
+                    .tag(AppCoordinator.MainTab.repositories)
 
-            // Favorites tab
-            FavoriteRepositoriesView(viewModel: viewModel, favoritesManager: favoritesManager)
-                .tabItem {
-                    Label(Constants.Strings.favoritesTabTitle, systemImage: Constants.Icons.favoritesTab)
-                }
+                FavoriteRepositoriesView(viewModel: viewModel, favoritesManager: favoritesManager)
+                    .tabItem {
+                        Label(Constants.Strings.favoritesTabTitle, systemImage: Constants.Icons.favoritesTab)
+                    }
+                    .tag(AppCoordinator.MainTab.favorites)
+            }
+            .task {
+                await viewModel.loadInitial()
+            }
         }
-        .task {
-            await viewModel.loadInitial()
+        .environmentObject(coordinator)
+        .onOpenURL { url in
+            coordinator.handleDeepLink(url: url)
         }
     }
 }

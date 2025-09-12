@@ -17,7 +17,7 @@ struct RepositoryRowView: View {
                 Text(repo.fullName ?? Constants.Strings.noNameString)
                     .accessibilityIdentifier(Constants.Strings.repositoryNameLabel)
                     .font(.headline)
-                Text(repo.owner.login)
+                Text(Date(rawValue: repo.createdAt)?.getDateString() ?? Constants.Strings.unknown)
                     .accessibilityIdentifier(Constants.Strings.repositoryOwnerLoginLabel)
                     .font(.subheadline)
                     .foregroundColor(.secondary)

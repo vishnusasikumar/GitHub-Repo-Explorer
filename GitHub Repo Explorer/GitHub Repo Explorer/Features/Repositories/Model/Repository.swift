@@ -16,6 +16,7 @@ struct Repository: Codable, Identifiable, Hashable {
     let htmlUrl: String?
     let stargazersCount: Int?
     let updatedAt: String?
+    let createdAt: String
     let allowForking: Bool
 
     func hash(into hasher: inout Hasher) {
