@@ -8,49 +8,56 @@
 import Foundation
 
 final class MockGitHubService: GitHubServiceProtocol {
+    var shouldReturnError = false
+    var repositoryToReturn: String?
+    var errorToThrow: APIError?
+
     func search<T: Decodable>(_ type: T.Type,
                               with query: String,
                               page: Int = 1,
                               perPage: Int = 10) async throws -> (T, [String: URL]) {
-        guard let url = Bundle.main.url(forResource: "RepositoriesMock", withExtension: "json") else {
-            throw MockServiceError.missingMockFile
-        }
-
-        let data = try Data(contentsOf: url)
-
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-
-        do {
-            let decoded = try decoder.decode(T.self, from: data)
-            return (decoded, [:])
-        } catch {
-            throw MockServiceError.decodingFailed(error)
+        if shouldReturnError {
+            if let errorToThrow {
+                throw errorToThrow
+            } else {
+                throw MockServiceError.missingMockFile
+            }
+        } else {
+            return try await performRequest(type, with: repositoryToReturn ?? "RepositoriesMock")
         }
     }
 
     func fetch<T: Decodable>(_ type: T.Type,
                              from url: URL) async throws -> (T, [String: URL]) {
-        guard let url = Bundle.main.url(forResource: "RepositoriesMock", withExtension: "json") else {
-            throw MockServiceError.missingMockFile
-        }
-
-        let data = try Data(contentsOf: url)
-
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-
-        do {
-            let decoded = try decoder.decode(T.self, from: data)
-            return (decoded, [:])
-        } catch {
-            throw MockServiceError.decodingFailed(error)
+        if shouldReturnError {
+            if let errorToThrow {
+                throw errorToThrow
+            } else {
+                throw MockServiceError.missingMockFile
+            }
+        } else {
+            return try await performRequest(type, with: repositoryToReturn ?? "RepositoriesMock")
         }
     }
 
     func fetch<T: Decodable>(_ type: T.Type,
                              from url: URL) async throws -> T {
-        guard let url = Bundle.main.url(forResource: "RepositoryDetailsMock", withExtension: "json") else {
+        if shouldReturnError {
+            if let errorToThrow {
+                throw errorToThrow
+            } else {
+                throw MockServiceError.missingMockFile
+            }
+        } else {
+            let (result, _) = try await performRequest(type, with: repositoryToReturn ?? "RepositoryDetailsMock")
+            return result
+        }
+    }
+
+    private func performRequest<T: Decodable>(_ type: T.Type, with request: String) async throws -> (T, [String: URL]) {
+        try await Task.sleep(nanoseconds: Constants.Network.mockDelayNanoseconds)
+
+        guard let url = Bundle.main.url(forResource: request, withExtension: "json") else {
             throw MockServiceError.missingMockFile
         }
 
@@ -61,7 +68,7 @@ final class MockGitHubService: GitHubServiceProtocol {
 
         do {
             let decoded = try decoder.decode(T.self, from: data)
-            return decoded
+            return (decoded, RepositoryMock.links)
         } catch {
             throw MockServiceError.decodingFailed(error)
         }
@@ -80,7 +87,7 @@ struct RepositoryMock {
             type: "User"
         ),
         language: "JavaScript",
-        url: "https://github.com/kriskowal/q",
+        url: "https://api.github.com/repos/kriskowal/q",
         stargazersCount: 15081,
         updatedAt: "2025-09-11T18:39:54Z",
         createdAt: "2019-06-12T08:26:27Z",
@@ -97,7 +104,7 @@ struct RepositoryMock {
             type: "User"
         ),
         language: "Python",
-        url: "https://github.com/harelba/q",
+        url: "https://api.github.com/repos/harelba/q",
         stargazersCount: 10319,
         updatedAt: "2025-09-10T05:33:42Z",
         createdAt: "2015-11-28T09:48:17Z",
@@ -133,6 +140,11 @@ struct RepositoryMock {
             "programming"
         ]
     )
+
+    static let links = [
+        "next": URL(string: "https://api.github.com/search/repositories?q=Q&per_page=10&page=2")!,
+        "last" : URL(string: "https://api.github.com/search/repositories?q=Q&per_page=10&page=100")!
+    ]
 }
 
 enum MockServiceError: Error, LocalizedError {

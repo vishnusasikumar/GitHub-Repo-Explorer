@@ -11,8 +11,10 @@ class FavoritesManager: ObservableObject {
     @Published private(set) var favorites: Set<Int> = []
 
     private let key = "favoriteRepoIDs"
+    private let defaults: UserDefaults
 
-    init() {
+    init(userDefaults: UserDefaults = .standard) {
+        self.defaults = userDefaults
         load()
     }
 
@@ -30,12 +32,12 @@ class FavoritesManager: ObservableObject {
     }
 
     private func load() {
-        if let saved = UserDefaults.standard.array(forKey: key) as? [Int] {
+        if let saved = defaults.array(forKey: key) as? [Int] {
             favorites = Set(saved)
         }
     }
 
     private func save() {
-        UserDefaults.standard.set(Array(favorites), forKey: key)
+        defaults.set(Array(favorites), forKey: key)
     }
 }

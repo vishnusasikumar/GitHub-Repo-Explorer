@@ -25,7 +25,7 @@ final class AppCoordinator: ObservableObject {
     func handleDeepLink(url: URL) {
         guard url.scheme == "ghre" else { return }
 
-        // Example deeplink: ghre://repository/12345
+        // Example deeplink: ghre://search/repository/12345
         let pathComponents = url.pathComponents.filter { $0 != "/" }
         guard let first = pathComponents.first else { return }
 

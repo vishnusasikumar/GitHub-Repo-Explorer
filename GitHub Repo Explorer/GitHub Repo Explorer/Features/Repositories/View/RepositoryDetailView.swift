@@ -11,6 +11,13 @@ struct RepositoryDetailView: View {
     @StateObject var viewModel: RepositoryDetailViewModel
     @ObservedObject var coordinator: AppCoordinator
 
+    #if DEBUG
+    init(viewModel: RepositoryDetailViewModel, coordinator: AppCoordinator) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+        self.coordinator = coordinator
+    }
+    #endif
+
     init(url: URL, coordinator: AppCoordinator) {
         let factory: RepositoryDetailViewModel.Factory = DI.shared.resolve()
         _viewModel = StateObject(wrappedValue: factory(url))

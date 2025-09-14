@@ -27,7 +27,7 @@ struct PaginationButton: View {
     var body: some View {
         Button {
             Task {
-                await viewModel.loadPage(for: rel.rawValue)
+                await viewModel.loadPage(for: rel)
             }
         } label: {
             Image(systemName: systemImageName)
