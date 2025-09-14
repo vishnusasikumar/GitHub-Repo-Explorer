@@ -26,11 +26,14 @@ final class RegisterDI {
         }
 
         // Views
-        DI.shared.register(RepositoryListView.self, RepositoryListView(viewModel: DI.shared.resolve(),
+        DI.shared.register(RepositoryListView.self,
+                           RepositoryListView(viewModel: DI.shared.resolve(),
                                               favoritesManager:  DI.shared.resolve(),
                                               coordinator: DI.shared.resolve()))
-        DI.shared.register(FavoriteRepositoriesView.self, FavoriteRepositoriesView(viewModel: DI.shared.resolve(),
-                                                    favoritesManager:  DI.shared.resolve()))
+        DI.shared.register(FavoriteRepositoriesView.self,
+                           FavoriteRepositoriesView(viewModel: DI.shared.resolve(),
+                                                    favoritesManager:  DI.shared.resolve(),
+                                                    coordinator: DI.shared.resolve()))
         DI.shared.register(RepositoryDetailView.Factory.self) { url, coordinator in
             RepositoryDetailView(url: url, coordinator: coordinator)
         }

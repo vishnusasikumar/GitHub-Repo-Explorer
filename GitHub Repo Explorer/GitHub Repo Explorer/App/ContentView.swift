@@ -21,7 +21,7 @@ struct ContentView: View {
                     }
                     .tag(AppCoordinator.MainTab.repositories)
 
-                FavoriteRepositoriesView(viewModel: viewModel, favoritesManager: favoritesManager)
+                FavoriteRepositoriesView(viewModel: viewModel, favoritesManager: favoritesManager, coordinator: coordinator)
                     .tabItem {
                         Label(Constants.Strings.favoritesTabTitle, systemImage: Constants.Icons.favoritesTab)
                     }

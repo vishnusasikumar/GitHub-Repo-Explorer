@@ -91,6 +91,8 @@ class RepositoryViewModel: ObservableObject {
 
     private func observeGroupingChange() {
         $groupingOption
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 let allRepos = self?.groupedRepositories.flatMap { $0.value } ?? []
                 self?.updateGroupRepositories(allRepos, links: self?.paginationLinks ?? [:])

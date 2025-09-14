@@ -74,6 +74,7 @@ struct Constants {
         static let privateRepository = String(localized: "Private Repository")
         static let publicRepository = String(localized: "Public Repository")
         static let detailsErrorMessage = String(localized: "Failed to load repository details: ")
+        static let closeButton = String(localized: "Close")
 
         // Accessibility
         static let repositoryNameLabel = "RepositoryNameLabel"

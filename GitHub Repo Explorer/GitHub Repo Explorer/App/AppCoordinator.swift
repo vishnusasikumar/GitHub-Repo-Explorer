@@ -19,6 +19,8 @@ final class AppCoordinator: ObservableObject {
     /// Stack-based navigation path for repositories
     @Published var path: [Int] = []
 
+    @Published var presentedRepositoryId: Int? = nil
+
     // MARK: - Deep Linking
 
     /// Handle deep link URL
@@ -54,4 +56,16 @@ final class AppCoordinator: ObservableObject {
     func resetNavigation() {
         path.removeAll()
     }
+
+    func presentRepositoryDetail(id: Int) {
+        presentedRepositoryId = id
+    }
+
+    func dismissModal() {
+        presentedRepositoryId = nil
+    }
+}
+
+extension Int: @retroactive Identifiable {
+    public var id: Int { self }
 }

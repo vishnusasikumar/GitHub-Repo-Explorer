@@ -26,6 +26,23 @@ struct RepositoryDetailView: View {
 
     var body: some View {
         VStack {
+            // MARK: Close Button
+            if !viewModel.isLoading, coordinator.presentedRepositoryId != nil {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        coordinator.dismissModal()
+                    }) {
+                        Image(systemName: Constants.Icons.clearSearchIcon)
+                            .foregroundColor(Constants.Colors.disabledColor)
+                            .imageScale(.large)
+                            .padding()
+                            .accessibilityLabel(Constants.Strings.closeButton)
+                    }
+                }
+            }
+
+            // MARK: Main Content
             if viewModel.isLoading {
                 ActivityIndicator()
                     .frame(width: Constants.Design.loadingViewSize, height: Constants.Design.loadingViewSize)
