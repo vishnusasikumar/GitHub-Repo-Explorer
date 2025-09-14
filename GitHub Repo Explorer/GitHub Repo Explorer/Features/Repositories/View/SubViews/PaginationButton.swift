@@ -31,13 +31,13 @@ struct PaginationButton: View {
             }
         } label: {
             Image(systemName: systemImageName)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(isEnabled ? .white : .gray)
-                .frame(width: 36, height: 36)
-                .background(isEnabled ? Color.accentColor : Color.gray.opacity(0.3))
+                .font(.title3)
+                .foregroundColor(isEnabled ? Constants.Colors.secondaryColor : Constants.Colors.disabledColor)
+                .frame(width: Constants.Design.iconSize, height: Constants.Design.iconSize)
+                .background(isEnabled ? Constants.Colors.primaryColor : Constants.Colors.buttonDisabledColor)
                 .clipShape(Circle())
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, Constants.Design.buttonPadding)
         .disabled(!isEnabled)
     }
 }

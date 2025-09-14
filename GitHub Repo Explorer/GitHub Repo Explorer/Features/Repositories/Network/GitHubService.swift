@@ -52,9 +52,22 @@ final class GitHubService: GitHubServiceProtocol {
     func fetch<T: Decodable>(_ type: T.Type,
                              from url: URL) async throws -> (T, [String: URL]) {
         var request = URLRequest(url: url)
-        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        Constants.GitHubAPIConfig.defaultHeaders.forEach { key, value in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
 
         return try await performRequest(type, with: request)
+    }
+
+    func fetch<T: Decodable>(_ type: T.Type,
+                             from url: URL) async throws -> T {
+        var request = URLRequest(url: url)
+        Constants.GitHubAPIConfig.defaultHeaders.forEach { key, value in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        let (result, _) = try await performRequest(type, with: request)
+
+        return result
     }
 
     // MARK: - Private helper to unify request, error handling, and decoding

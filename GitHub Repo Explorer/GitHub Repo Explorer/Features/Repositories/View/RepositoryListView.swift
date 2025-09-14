@@ -10,9 +10,10 @@ import SwiftUI
 struct RepositoryListView: View {
     @ObservedObject var viewModel: RepositoryViewModel
     @ObservedObject var favoritesManager: FavoritesManager
+    @ObservedObject var coordinator: AppCoordinator
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $coordinator.path) {
             VStack {
                 SearchBar(text: $viewModel.searchQuery)
 
@@ -21,14 +22,14 @@ struct RepositoryListView: View {
                         case .idle:
                             Text(Constants.Strings.noRepositoriesTitle)
                                 .font(.footnote)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(Constants.Colors.secondaryColor)
                                 .frame(maxWidth: .infinity)
                                 .accessibilityIdentifier(Constants.Strings.idleView)
 
                         case .loading:
                             ActivityIndicator()
                                 .frame(width: Constants.Design.loadingViewSize, height: Constants.Design.loadingViewSize)
-                                .foregroundColor(.accentColor)
+                                .foregroundColor(Constants.Colors.primaryColor)
                                 .accessibilityIdentifier(Constants.Strings.loadingView)
 
                         case .success:
@@ -62,6 +63,17 @@ struct RepositoryListView: View {
                     .pickerStyle(.menu)
                 }
             }
+            .navigationDestination(for: Int.self) { repoId in
+                if let url = viewModel.repositoryURL(for: repoId) {
+                    RepositoryDetailView(url: url,
+                                         coordinator: coordinator)
+                } else {
+                    ErrorView(errorMessage: Constants.Strings.repositoryDetailsErrorMessage,
+                              errorDescription: Constants.Strings.errorDescription,
+                              showRetry: false,
+                              retryAction: {})
+                }
+            }
         }
     }
 
@@ -71,14 +83,18 @@ struct RepositoryListView: View {
                 if let repos = viewModel.groupedRepositories[key] {
                     Section(header: Text(key)) {
                         ForEach(repos) { repo in
-                            RepositoryRowView(repo: repo)
+                            Button {
+                                coordinator.showRepositoryDetail(id: repo.id)
+                            } label: {
+                                RepositoryRowView(repo: repo)
+                            }
                         }
                     }
                 }
             }
         }
         .accessibilityIdentifier(Constants.Strings.repositoriesList)
-        .listStyle(InsetGroupedListStyle())
+        .listStyle(.insetGrouped)
     }
 
     @ViewBuilder
@@ -94,5 +110,6 @@ struct RepositoryListView: View {
 
 #Preview {
     RepositoryListView(viewModel: DI.shared.resolve(),
-                       favoritesManager: DI.shared.resolve())
+                       favoritesManager: DI.shared.resolve(),
+                       coordinator: DI.shared.resolve())
 }

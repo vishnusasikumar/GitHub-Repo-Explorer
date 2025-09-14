@@ -10,6 +10,7 @@ import SwiftUI
 struct ErrorView: View {
     let errorMessage: String
     let errorDescription: String
+    var showRetry: Bool = true
     let retryAction: () -> Void
 
     var body: some View {
@@ -18,7 +19,9 @@ struct ErrorView: View {
                 .font(.title)
             Text(errorDescription)
                 .multilineTextAlignment(.center)
-            Button(Constants.Strings.tryAgainButton, action: retryAction)
+            if showRetry {
+                Button(Constants.Strings.tryAgainButton, action: retryAction)
+            }
         }
         .accessibilityIdentifier(Constants.Strings.errorView)
         .padding()

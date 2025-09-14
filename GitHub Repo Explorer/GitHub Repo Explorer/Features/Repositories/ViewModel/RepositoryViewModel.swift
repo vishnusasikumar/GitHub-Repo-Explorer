@@ -39,6 +39,15 @@ class RepositoryViewModel: ObservableObject {
         await search(with: url)
     }
 
+    func repositoryURL(for id: Int) -> URL? {
+        for repos in groupedRepositories.values {
+            if let repo = repos.first(where: { $0.id == id }) {
+                return URL(string: repo.url ?? .empty)
+            }
+        }
+        return nil
+    }
+
     // MARK: - Private methods
 
     private func observeSearch() {

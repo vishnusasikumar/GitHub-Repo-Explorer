@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivityIndicator: View {
 
     @State private var isAnimating: Bool = false
-    var colors: [Color] = [Color.accentColor, Color.white]
+    var colors: [Color] = [Constants.Colors.primaryColor, Constants.Colors.secondaryColor]
 
     var body: some View {
         GeometryReader { geometry in

@@ -17,7 +17,7 @@ struct SearchBar: View {
                 .padding(Constants.Design.searchFieldPadding)
                 .padding(.horizontal, Constants.Design.searchFieldHorizontalPadding)
                 .background(Constants.Colors.searchTextColor)
-                .cornerRadius(Constants.Design.searchCornerRadius)
+                .cornerRadius(Constants.Design.cornerRadius)
                 .overlay(
                     HStack {
                         Image(systemName: Constants.Icons.searchIcon)

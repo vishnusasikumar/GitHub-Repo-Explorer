@@ -13,7 +13,7 @@ struct Repository: Codable, Identifiable, Hashable {
     let fullName: String?
     let owner: Owner
     let language: String?
-    let htmlUrl: String?
+    let url: String?
     let stargazersCount: Int?
     let updatedAt: String?
     let createdAt: String

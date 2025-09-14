@@ -8,14 +8,18 @@
 import SwiftUI
 
 final class AppCoordinator: ObservableObject {
-    @Published var selectedTab: MainTab = .repositories
-
-    @Published var selectedRepositoryId: Int?
-
     enum MainTab {
         case repositories
         case favorites
     }
+
+    /// The currently selected tab
+    @Published var selectedTab: MainTab = .repositories
+
+    /// Stack-based navigation path for repositories
+    @Published var path: [Int] = []
+
+    // MARK: - Deep Linking
 
     /// Handle deep link URL
     func handleDeepLink(url: URL) {
@@ -28,14 +32,26 @@ final class AppCoordinator: ObservableObject {
         switch first {
             case "repository":
                 if pathComponents.count > 1, let repoId = Int(pathComponents[1]) {
-                    // Navigate to repositories tab and show detail for repoId
                     selectedTab = .repositories
-                    selectedRepositoryId = repoId
+                    path = [repoId] // Navigate to repo detail via path
                 }
+
             case "favorites":
                 selectedTab = .favorites
+
             default:
                 break
         }
+    }
+
+    /// Programmatic navigation to a repo
+    func showRepositoryDetail(id: Int) {
+        selectedTab = .repositories
+        path = [id]
+    }
+
+    /// Clears navigation path
+    func resetNavigation() {
+        path.removeAll()
     }
 }

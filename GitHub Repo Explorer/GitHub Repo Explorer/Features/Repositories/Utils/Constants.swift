@@ -14,17 +14,22 @@ struct Constants {
     struct Design {
         // Padding and Spacing
         static let cardSpacing: CGFloat = 16
+        static let stargazerBandSpacing: CGFloat = 4
         static let iconPadding: CGFloat = 8
         static let searchFieldPadding: CGFloat = 8
         static let searchFieldHorizontalPadding: CGFloat = 24
+        static let topicsPadding: CGFloat = 6
+        static let buttonPadding: CGFloat = 10
 
         // Corner Radius
-        static let searchCornerRadius: CGFloat = 8
+        static let cornerRadius: CGFloat = 8
 
         // Sizes
         static let trimMinScale: CGFloat = 0.75
         static let trimMaxScale: CGFloat = 1.0
         static let lineWidth: CGFloat = 16
+        static let buttonIconScale: CGFloat = 0.3
+        static let iconSize: CGFloat = 36
         static let loadingViewSize: CGFloat = 100
 
         // Line Width
@@ -45,6 +50,8 @@ struct Constants {
 
         // Error State
         static let errorMessage = String(localized: "Failed to load Repositories")
+        static let errorDescription = String(localized: "Something went wrong, please try again later")
+        static let repositoryDetailsErrorMessage = String(localized: "Failed to load details url")
         static let tryAgainButton = String(localized: "Try Again")
         static let unknown = String(localized: "Unknown")
 
@@ -60,6 +67,13 @@ struct Constants {
         static let stargazerBand = String(localized: "Stargazer Band")
         static let updatedMonth = String(localized: "Updated Month")
         static let forkStatus = String(localized: "Fork Status")
+
+        // Details
+        static let archived = String(localized: "Archived")
+        static let topicsTitle = String(localized: "Topics:")
+        static let privateRepository = String(localized: "Private Repository")
+        static let publicRepository = String(localized: "Public Repository")
+        static let detailsErrorMessage = String(localized: "Failed to load repository details: ")
 
         // Accessibility
         static let repositoryNameLabel = "RepositoryNameLabel"
@@ -121,14 +135,29 @@ struct Constants {
 
         static let searchIcon = "magnifyingglass"
         static let clearSearchIcon = "xmark.circle.fill"
+        static let licenseIcon = "doc.plaintext"
     }
 
     // MARK: - Colors
     struct Colors {
+        static let primaryColor = Color.accentColor
+        static let secondaryColor = Color.white
+        static let disabledColor = Color.gray
+
         static let negativeFavouriteColor = Color.gray
         static let positiveFavouriteColor = Color.yellow
 
         static let searchTextColor = Color(.systemGray6)
+
+        static let privateColor = Color.red
+        static let publicColor = Color.green
+        static let stargazerBandColor = Color.yellow
+        static let archivedColor = Color.gray
+        static let topicsBackgroundColor = Color.blue.opacity(0.2)
+        static let topicsColor = Color.blue
+
+        static let errorColor = Color.red
+        static let buttonDisabledColor = disabledColor.opacity(Design.buttonIconScale)
     }
 }
 

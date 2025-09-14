@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             TabView(selection: $coordinator.selectedTab) {
-                RepositoryListView(viewModel: viewModel, favoritesManager: favoritesManager)
+                RepositoryListView(viewModel: viewModel, favoritesManager: favoritesManager, coordinator: coordinator)
                     .tabItem {
                         Label(Constants.Strings.repositoriesTabTitle, systemImage: Constants.Icons.repositoriesTab)
                     }
