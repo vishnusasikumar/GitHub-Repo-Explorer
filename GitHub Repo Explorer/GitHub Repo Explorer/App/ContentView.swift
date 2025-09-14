@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var coordinator = AppCoordinator()
+    @StateObject private var coordinator: AppCoordinator = DI.shared.resolve()
     @StateObject var viewModel: RepositoryViewModel = DI.shared.resolve()
     @StateObject var favoritesManager: FavoritesManager = DI.shared.resolve()
 

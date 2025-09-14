@@ -53,14 +53,8 @@ struct RepositoryListView: View {
             .navigationTitle(Constants.Strings.repositoriesTitle)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Picker(Constants.Strings.groupByPickerTitle, selection: $viewModel.groupingOption) {
-                        ForEach(GroupingOption.allCases) { option in
-                            Label(option.label, systemImage: option.icon)
-                                .tag(option)
-                        }
-                    }
-                    .accessibilityIdentifier(Constants.Strings.groupByPicker)
-                    .pickerStyle(.menu)
+                    GroupByPickerView(selectedOption: $viewModel.groupingOption)
+                        .disabled(coordinator.selectedTab != .repositories)
                 }
             }
             .navigationDestination(for: Int.self) { repoId in
