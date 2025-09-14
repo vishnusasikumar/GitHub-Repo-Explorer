@@ -13,60 +13,40 @@ struct RepositoryListView: View {
     @ObservedObject var coordinator: AppCoordinator
 
     var body: some View {
-        NavigationStack(path: $coordinator.path) {
+        VStack {
+            SearchBar(text: $viewModel.searchQuery)
+
             VStack {
-                SearchBar(text: $viewModel.searchQuery)
+                switch viewModel.loadingState {
+                    case .idle:
+                        Text(Constants.Strings.noRepositoriesTitle)
+                            .font(.footnote)
+                            .foregroundColor(Constants.Colors.secondaryColor)
+                            .frame(maxWidth: .infinity)
+                            .accessibilityIdentifier(Constants.Strings.idleView)
 
-                Group {
-                    switch viewModel.loadingState {
-                        case .idle:
-                            Text(Constants.Strings.noRepositoriesTitle)
-                                .font(.footnote)
-                                .foregroundColor(Constants.Colors.secondaryColor)
-                                .frame(maxWidth: .infinity)
-                                .accessibilityIdentifier(Constants.Strings.idleView)
+                    case .loading:
+                        ActivityIndicator()
+                            .frame(width: Constants.Design.loadingViewSize, height: Constants.Design.loadingViewSize)
+                            .foregroundColor(Constants.Colors.primaryColor)
+                            .accessibilityIdentifier(Constants.Strings.loadingView)
 
-                        case .loading:
-                            ActivityIndicator()
-                                .frame(width: Constants.Design.loadingViewSize, height: Constants.Design.loadingViewSize)
-                                .foregroundColor(Constants.Colors.primaryColor)
-                                .accessibilityIdentifier(Constants.Strings.loadingView)
+                    case .success:
+                        VStack {
+                            repoListView
+                            paginationControls
+                        }
 
-                        case .success:
-                            VStack {
-                                repoListView
-                                paginationControls
+                    case .failure(let error):
+                        ErrorView(
+                            errorMessage: Constants.Strings.errorMessage,
+                            errorDescription: error.errorDescription ?? Constants.Strings.unknown,
+                            retryAction: {
+                                viewModel.searchQuery = viewModel.searchQuery
                             }
-
-                        case .failure(let error):
-                            ErrorView(
-                                errorMessage: Constants.Strings.errorMessage,
-                                errorDescription: error.errorDescription ?? Constants.Strings.unknown,
-                                retryAction: {
-                                    viewModel.searchQuery = viewModel.searchQuery
-                                }
-                            )
-                    }
-                    Spacer()
+                        )
                 }
-            }
-            .navigationTitle(Constants.Strings.repositoriesTitle)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    GroupByPickerView(selectedOption: $viewModel.groupingOption)
-                        .disabled(coordinator.selectedTab != .repositories)
-                }
-            }
-            .navigationDestination(for: Int.self) { repoId in
-                if let url = viewModel.repositoryURL(for: repoId) {
-                    RepositoryDetailView(url: url,
-                                         coordinator: coordinator)
-                } else {
-                    ErrorView(errorMessage: Constants.Strings.repositoryDetailsErrorMessage,
-                              errorDescription: Constants.Strings.errorDescription,
-                              showRetry: false,
-                              retryAction: {})
-                }
+                Spacer()
             }
         }
     }

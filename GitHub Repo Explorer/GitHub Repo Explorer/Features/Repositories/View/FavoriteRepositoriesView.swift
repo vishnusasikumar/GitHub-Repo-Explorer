@@ -13,16 +13,18 @@ struct FavoriteRepositoriesView: View {
     @ObservedObject var coordinator: AppCoordinator
 
     var favoriteRepos: [Repository] {
-        viewModel.groupedRepositories.values.flatMap { $0 }
+        viewModel.groupedRepositories.values
+            .flatMap { $0 }
             .filter { favoritesManager.favorites.contains($0.id) }
     }
 
     var body: some View {
-        NavigationStack(path: $coordinator.path) {
+        VStack {
+            Spacer()
             List {
                 if favoriteRepos.isEmpty {
                     Text(Constants.Strings.noFavouritesTitle)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Constants.Colors.secondaryColor)
                 } else {
                     ForEach(favoriteRepos) { repo in
                         Button {
@@ -33,22 +35,7 @@ struct FavoriteRepositoriesView: View {
                     }
                 }
             }
-            .navigationTitle(Constants.Strings.favouritesTitle)
-        }
-        .accessibilityIdentifier(Constants.Strings.favouritesList)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .sheet(item: Binding(
-            get: { coordinator.presentedRepositoryId },
-            set: { newValue in coordinator.presentedRepositoryId = newValue }
-        )) { repoId in
-            if let url = viewModel.repositoryURL(for: repoId) {
-                RepositoryDetailView(url: url, coordinator: coordinator)
-            } else {
-                ErrorView(errorMessage: Constants.Strings.repositoryDetailsErrorMessage,
-                          errorDescription: Constants.Strings.errorDescription,
-                          showRetry: false,
-                          retryAction: {})
-            }
+            .accessibilityIdentifier(Constants.Strings.favouritesList)
         }
     }
 }
