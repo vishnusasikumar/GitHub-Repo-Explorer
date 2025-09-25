@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-final class AppCoordinator: ObservableObject {
-    enum MainTab {
-        case repositories
-        case favorites
-    }
+enum MainTab {
+    case repositories
+    case favorites
+}
 
+final class AppCoordinator: ObservableObject {
     /// The currently selected tab
     @Published var selectedTab: MainTab = .repositories
 

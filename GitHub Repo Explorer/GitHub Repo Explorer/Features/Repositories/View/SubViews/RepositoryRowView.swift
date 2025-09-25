@@ -9,7 +9,8 @@ import SwiftUI
 
 struct RepositoryRowView: View {
     let repo: Repository
-    @ObservedObject var favoritesManager: FavoritesManager = DI.shared.resolve()
+    @Binding var isFavorite: Bool
+    let toggleFavorite: () -> Void
 
     var body: some View {
         HStack {
@@ -23,11 +24,9 @@ struct RepositoryRowView: View {
                     .foregroundColor(.secondary)
             }
             Spacer()
-            Button(action: {
-                favoritesManager.toggleFavorite(repo)
-            }) {
-                Image(systemName: favoritesManager.isFavorited(repo) ? Constants.Icons.isFavourite : Constants.Icons.favourite)
-                    .foregroundColor(favoritesManager.isFavorited(repo) ? Constants.Colors.positiveFavouriteColor : Constants.Colors.negativeFavouriteColor)
+            Button(action: toggleFavorite) {
+                Image(systemName: isFavorite ? Constants.Icons.isFavourite : Constants.Icons.favourite)
+                    .foregroundColor(isFavorite ? Constants.Colors.positiveFavouriteColor : Constants.Colors.negativeFavouriteColor)
             }
             .accessibilityIdentifier(Constants.Strings.favouriteToggle)
             .buttonStyle(BorderlessButtonStyle())
@@ -36,5 +35,5 @@ struct RepositoryRowView: View {
 }
 
 #Preview {
-    RepositoryRowView(repo: RepositoryMock.sample1)
+    RepositoryRowView(repo: RepositoryMock.sample1, isFavorite: .constant(true)) {}
 }

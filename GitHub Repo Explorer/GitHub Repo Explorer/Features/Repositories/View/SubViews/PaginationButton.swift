@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PaginationButton: View {
     let rel: Rel
-    @ObservedObject var viewModel: RepositoryViewModel = DI.shared.resolve()
+    @ObservedObject var viewModel: RepositoryViewModel
 
     private var isEnabled: Bool {
         viewModel.paginationLinks[rel.rawValue] != nil
@@ -43,5 +43,5 @@ struct PaginationButton: View {
 }
 
 #Preview {
-    PaginationButton(rel: .first)
+    PaginationButton(rel: .first, viewModel: DI.shared.resolve())
 }

@@ -23,7 +23,7 @@ struct ContentView: View {
                 .tabItem {
                     Label(Constants.Strings.repositoriesTabTitle, systemImage: Constants.Icons.repositoriesTab)
                 }
-                .tag(AppCoordinator.MainTab.repositories)
+                .tag(MainTab.repositories)
 
                 FavoriteRepositoriesView(
                     viewModel: viewModel,
@@ -33,7 +33,7 @@ struct ContentView: View {
                 .tabItem {
                     Label(Constants.Strings.favoritesTabTitle, systemImage: Constants.Icons.favoritesTab)
                 }
-                .tag(AppCoordinator.MainTab.favorites)
+                .tag(MainTab.favorites)
             }
             .navigationDestination(for: Int.self) { repoId in
                 if let url = viewModel.repositoryURL(for: repoId) {

@@ -30,7 +30,14 @@ struct FavoriteRepositoriesView: View {
                         Button {
                             coordinator.presentRepositoryDetail(id: repo.id)
                         } label: {
-                            RepositoryRowView(repo: repo)
+                            RepositoryRowView(
+                                repo: repo,
+                                isFavorite: Binding(
+                                    get: { favoritesManager.isFavorited(repo) },
+                                    set: { _ in favoritesManager.toggleFavorite(repo) }
+                                ),
+                                toggleFavorite: { favoritesManager.toggleFavorite(repo) }
+                            )
                         }
                     }
                 }

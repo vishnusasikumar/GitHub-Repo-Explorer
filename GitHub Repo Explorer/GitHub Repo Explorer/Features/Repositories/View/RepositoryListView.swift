@@ -60,7 +60,14 @@ struct RepositoryListView: View {
                             Button {
                                 coordinator.showRepositoryDetail(id: repo.id)
                             } label: {
-                                RepositoryRowView(repo: repo)
+                                RepositoryRowView(
+                                    repo: repo,
+                                    isFavorite: Binding(
+                                        get: { favoritesManager.isFavorited(repo) },
+                                        set: { _ in favoritesManager.toggleFavorite(repo) }
+                                        ),
+                                    toggleFavorite: { favoritesManager.toggleFavorite(repo) }
+                                )
                             }
                         }
                     }
@@ -75,7 +82,7 @@ struct RepositoryListView: View {
     private var paginationControls: some View {
         HStack {
             ForEach(Rel.allCases) { option in
-                PaginationButton(rel: option)
+                PaginationButton(rel: option, viewModel: viewModel)
             }
         }
         .accessibilityIdentifier(Constants.Strings.paginationControls)

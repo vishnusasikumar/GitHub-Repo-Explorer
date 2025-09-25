@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchBar: View {
     @Binding var text: String
     @State private var isEditing = false
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         HStack {
@@ -44,7 +45,7 @@ struct SearchBar: View {
                 Button(Constants.Strings.cancelSearch) {
                     self.isEditing = false
                     self.text = .empty
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    self.isFocused = false
                 }
                 .transition(.move(edge: .trailing))
                 .animation(.default, value: isEditing)
